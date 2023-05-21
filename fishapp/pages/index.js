@@ -5,13 +5,13 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>fishapp</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://a-z-animals.com/media/2021/06/Most-Expensive-Fish_-Platinum-Arowana-1024x535.jpg"> fishapp !</a>
         </h1>
 
         <p className={styles.description}>
@@ -46,6 +46,12 @@ export default function Home() {
               Instantly deploy your Next.js site to a public URL with Vercel.
             </p>
           </a>
+
+          <a href="https://nextjs.org/learn" className={styles.card}>
+            <h3>Build a Tank! &rarr;</h3>
+            <p>Create a tank based on your preferences through an interactive quiz!</p>
+          </a>
+
         </div>
       </main>
 
