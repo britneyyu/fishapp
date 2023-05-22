@@ -16,6 +16,11 @@ export default function Home() {
         </h1>
 
         <div className={styles.grid}>
+          <Link name='home'href="/home" className={styles.card}>
+                <h3>Homepage &rarr;</h3>
+                <p>Create a tank based on your preferences through an interactive quiz!</p>       
+          </Link> 
+
           <Link href="/buildtank" className={styles.card}>
               <h3>Build a Tank &rarr;</h3>
               <p>Create a tank based on your preferences through an interactive quiz!</p>
