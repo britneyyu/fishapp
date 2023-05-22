@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -14,43 +15,27 @@ export default function Home() {
           Welcome to <a href="https://a-z-animals.com/media/2021/06/Most-Expensive-Fish_-Platinum-Arowana-1024x535.jpg"> fishapp !</a>
         </h1>
 
-        <p className={styles.description}>
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+          <Link href="/buildtank" className={styles.card}>
+              <h3>Build a Tank &rarr;</h3>
+              <p>Create a tank based on your preferences through an interactive quiz!</p>
+               
+          </Link> 
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+          <Link href="/fishdex" className={styles.card}>
+            <h3>Fishdex &rarr;</h3>
+            <p>Check out all the fish</p>
+          </Link>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+          <Link href="/about" className={styles.card}>
+            <h3>About &rarr;</h3>
+            <p>Who are we</p>
+          </Link>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
+          <Link href="/buildtank" className={styles.card}>
             <h3>Build a Tank! &rarr;</h3>
-            <p>Create a tank based on your preferences through an interactive quiz!</p>
-          </a>
+            <p>Find a fish based on your preferences. Take our fish compatibiliy quiz.</p>
+          </Link>
 
         </div>
       </main>
