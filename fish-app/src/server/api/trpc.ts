@@ -6,15 +6,13 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
-import { prisma } from "~/server/db";
-
+import { prisma, type User} from "~/server/db";
 /**
  * 1. CONTEXT
  *
@@ -55,7 +53,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
-
   return createInnerTRPCContext({
     session,
   });
@@ -119,6 +116,39 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+/** Middleware that checks if the user has the necessary role for the procedure. */
+const checkUserRole =  (role: string) =>
+  t.middleware(async ({ ctx, next }) => {
+    if (!ctx.session || !ctx.session.user) {
+      console.log(ctx.session?.user);
+      throw new TRPCError({ code: "FORBIDDEN" });
+    }
+   // console.log(ctx.session?.user);
+    //console.log(ctx.session?.user.role);
+    if (!ctx.session?.user.role) {
+      console.log("getting user role")
+      const user = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+      }) as User;
+      if (!user || !user.role) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      } else if (user?.role == "ADMIN"){
+        ctx.session.user = { ...ctx.session.user, role: "ADMIN" };
+      }
+      else if (user?.role == "USER"){
+        ctx.session.user = { ...ctx.session.user, role: "USER" };
+      }
+    }
+    if (ctx.session?.user.role !== role) {
+      throw new TRPCError({ code: "FORBIDDEN" });
+    }
+    return next({ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    }});
+  });
 /**
  * Protected (authenticated) procedure
  *
@@ -127,4 +157,13 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedProcedure = t.procedure
+  .use(enforceUserIsAuthed)
+  .use(checkUserRole("ADMIN"));
+
+export const userProcedure = t.procedure
+  .use(enforceUserIsAuthed)
+
+export const adminProcedure = t.procedure
+  .use(enforceUserIsAuthed)
+  .use(checkUserRole("ADMIN"));
