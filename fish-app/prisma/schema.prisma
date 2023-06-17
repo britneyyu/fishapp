@@ -51,6 +51,7 @@ model Fish {
   scientificName String
   commonName     String
   description    String
+  type           String   @default("freshwater")   // saltwater, freshwater or brackish
   image          String
   tanks          Tank[]   // Add a many-to-many relationship with the Tank model
 }

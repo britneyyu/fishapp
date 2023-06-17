@@ -6,8 +6,8 @@ import { api } from "~/utils/api";
 
 
 const Home: NextPage = () => {
- // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
+  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const fish = api.fish.getAll.useQuery();
   return (
     <>
       <Head>
@@ -47,10 +47,15 @@ const Home: NextPage = () => {
                     href="https://create.t3.gg/en/introduction"
                     target="_blank"
                   >
-                    <h3 className="text-2xl font-bold">Documentation →</h3>
+                    <h3 className="text-2xl font-bold">All Fish</h3>
                     <div className="text-lg">
-                      Learn more about Create T3 App, the libraries it uses, and how
-                      to deploy it.
+                    {fish.data && (
+                      <ul>
+                        {fish.data.map((item) => (
+                          <li key={item.id}>{item.commonName}</li>
+                        ))}
+                      </ul>
+                    )}
                     </div>
                   </Link>
                   <div className="flex max-w-xs flex-col gap-4 rounded-2xl bg-white/10 p-4 text-white hover:bg-white/20">
